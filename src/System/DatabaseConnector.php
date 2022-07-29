@@ -1,15 +1,21 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Src\System;
 
-class DatabaseConnector {
+use PDO;
+
+class DatabaseConnector
+{
 
     private $dbConnection = null;
 
-    public function __construct(Array $DB_SETTINGS)
+    public function __construct(array $DB_SETTINGS)
     {
         $host = $DB_SETTINGS['DB_HOST'];
         $port = $DB_SETTINGS['DB_PORT'];
-        $db   = $DB_SETTINGS['DB_DATABASE'];
+        $db = $DB_SETTINGS['DB_DATABASE'];
         $user = $DB_SETTINGS['DB_USERNAME'];
         $pass = $DB_SETTINGS['DB_PASSWORD'];
 
@@ -24,9 +30,8 @@ class DatabaseConnector {
         }
     }
 
-    public function getConnection()
+    public function getConnection(): \PDO
     {
         return $this->dbConnection;
     }
 }
-

@@ -1,19 +1,22 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Src\TableGateways;
-/*
-* Default CRUD functions
-*/
-class TransactionGateway {
+
+/*** * Default CRUD functions ***/
+class TransactionGateway
+{
 
     private $db = null;
     private $table_name = 'transactions';
 
-    public function __construct($db)
+    public function __construct(\PDO $db)
     {
         $this->db = $db;
     }
 
-    public function findAll()
+    public function findAll(): array
     {
         $statement = "
             SELECT 
@@ -31,7 +34,7 @@ class TransactionGateway {
         }
     }
 
-    public function find($id)
+    public function find(int $id): array
     {
         $statement = "
             SELECT 
@@ -48,10 +51,10 @@ class TransactionGateway {
             return $result;
         } catch (\PDOException $e) {
             exit($e->getMessage());
-        }    
+        }
     }
 
-    public function insert(Array $input)
+    public function insert(array $input): int
     {
         $statement = "
             INSERT INTO $this->table_name 
@@ -64,13 +67,17 @@ class TransactionGateway {
             $statement = $this->db->prepare($statement);
             $statement->execute(array(
                 'wallet_id' => $input['wallet_id'],
-                'type'  => $input['type'],
+                'type' => $input['type'],
                 'amount' => $input['amount'],
-                'reference'  => $input['reference'],
+                'reference' => $input['reference'],
             ));
-            return $this->db->lastInsertId();
+
+            $lastInsertId = $this->db->lastInsertId();
+            if (!$lastInsertId || intval($lastInsertId) <= 0)
+                return 0;
+            return intval($lastInsertId);
         } catch (\PDOException $e) {
             exit($e->getMessage());
-        }    
+        }
     }
 }

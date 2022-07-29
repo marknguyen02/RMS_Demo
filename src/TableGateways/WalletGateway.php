@@ -1,19 +1,22 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Src\TableGateways;
-/*
-* Default CRUD functions
-*/
-class WalletGateway {
+
+/*** * Default CRUD functions ***/
+class WalletGateway
+{
 
     private $db = null;
     private $table_name = 'wallets';
 
-    public function __construct($db)
+    public function __construct(\PDO $db)
     {
         $this->db = $db;
     }
 
-    public function findAll()
+    public function findAll(): array
     {
         $statement = "
             SELECT 
@@ -31,7 +34,7 @@ class WalletGateway {
         }
     }
 
-    public function find($id)
+    public function find(int $id): array
     {
         $statement = "
             SELECT 
@@ -48,10 +51,10 @@ class WalletGateway {
             return $result;
         } catch (\PDOException $e) {
             exit($e->getMessage());
-        }    
+        }
     }
 
-    public function findByName($name)
+    public function findByName(string $name): array
     {
         $statement = "
             SELECT 
@@ -71,7 +74,7 @@ class WalletGateway {
         }
     }
 
-    public function findByCondition(Array $input)
+    public function findByCondition(array $input): array
     {
         $statement = "
             SELECT 
@@ -85,7 +88,7 @@ class WalletGateway {
             $statement = $this->db->prepare($statement);
             $statement->execute(array(
                 'name' => $input['name'],
-                'hash_key'  => $input['hash_key'],
+                'hash_key' => $input['hash_key'],
             ));
             $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
             return $result;
@@ -94,7 +97,7 @@ class WalletGateway {
         }
     }
 
-    public function insert(Array $input)
+    public function insert(array $input): int
     {
         $statement = "
             INSERT INTO $this->table_name 
@@ -107,15 +110,19 @@ class WalletGateway {
             $statement = $this->db->prepare($statement);
             $statement->execute(array(
                 'name' => $input['name'],
-                'hash_key'  => $input['hash_key'],
+                'hash_key' => $input['hash_key'],
             ));
-            return $this->db->lastInsertId();
+
+            $lastInsertId = $this->db->lastInsertId();
+            if (!$lastInsertId || intval($lastInsertId) <= 0)
+                return 0;
+            return intval($lastInsertId);
         } catch (\PDOException $e) {
             exit($e->getMessage());
-        }    
+        }
     }
 
-    public function delete($id)
+    public function delete(int $id): int
     {
         $statement = "
             DELETE FROM $this->table_name
@@ -128,6 +135,6 @@ class WalletGateway {
             return $statement->rowCount();
         } catch (\PDOException $e) {
             exit($e->getMessage());
-        }    
+        }
     }
 }
