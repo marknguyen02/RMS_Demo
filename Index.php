@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 include('Config.php');
 
 use Src\Controller\WalletController;
@@ -33,7 +34,7 @@ if ($uri[1] == 'wallets') {
             $response = $controller->createWalletFromRequest($_POST);
             break;
         case 'DELETE':
-            $input = (array)json_decode(file_get_contents('php://input'), TRUE);
+            $input = (array)json_decode(file_get_contents('php://input'), true);
             $response = $controller->deleteWallet($input);
             break;
         default:

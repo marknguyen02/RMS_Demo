@@ -8,7 +8,6 @@ use PDO;
 
 class DatabaseConnector
 {
-
     private $dbConnection = null;
 
     public function __construct(array $DB_SETTINGS)

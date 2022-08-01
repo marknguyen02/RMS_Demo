@@ -80,20 +80,21 @@ class TransactionController
         $amount = $input['amount'];
         $reference = $input['reference'];
         $type = $input['type'];
-        if (!isset($name) || strlen($name) < 3 || strlen($name) > 255 || preg_match('/[^a-z0-9]+/i', $name))
+        if (!isset($name) || strlen($name) < 3 || strlen($name) > 255 || preg_match('/[^a-z0-9]+/i', $name)) {
             return false;
-        elseif ($type !== "BET" && $type !== "WIN")
+        } elseif ($type !== "BET" && $type !== "WIN") {
             return false;
-        elseif (!intval($amount) || ($type == "BET" && intval($amount) > 0) || ($type == "WIN" && intval($amount) < 0))
+        } elseif (!intval($amount) || ($type == "BET" && intval($amount) > 0) || ($type == "WIN" && intval($amount) < 0)) {
             return false;
-        elseif (substr($reference, 0, 3) !== 'TR-' || strlen($reference) < 3 || strlen($reference) > 255)
+        } elseif (substr($reference, 0, 3) !== 'TR-' || strlen($reference) < 3 || strlen($reference) > 255) {
             return false;
+        }
 
         /*
-         - hash_key should be subsequently loaded from the table wallets using the name as a reference. 
+         - hash_key should be subsequently loaded from the table wallets using the name as a reference.
          - hask_check needs to be MD5(hash_key.name.type.amount.reference.hash_check)
-         - If hash_check doesn’t match MD5(hash_key.name.type.amount.reference.hash_check), code 404 must be sent without any details. 
-         => TODO: not sure what need to check here cos after build hash_check as md5(hash_key.name.type.amount.reference.hash_check), 
+         - If hash_check doesn’t match MD5(hash_key.name.type.amount.reference.hash_check), code 404 must be sent without any details.
+         => TODO: not sure what need to check here cos after build hash_check as md5(hash_key.name.type.amount.reference.hash_check),
          the compare mention in last point make no sense. and don't see any place using this or db structure.
          */
 

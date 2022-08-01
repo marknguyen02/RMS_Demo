@@ -7,7 +7,6 @@ namespace Src\TableGateways;
 /*** * Default CRUD functions ***/
 class TransactionGateway
 {
-
     private $db = null;
     private $table_name = 'transactions';
 
@@ -73,8 +72,9 @@ class TransactionGateway
             ));
 
             $lastInsertId = $this->db->lastInsertId();
-            if (!$lastInsertId || intval($lastInsertId) <= 0)
+            if (!$lastInsertId || intval($lastInsertId) <= 0) {
                 return 0;
+            }
             return intval($lastInsertId);
         } catch (\PDOException $e) {
             exit($e->getMessage());

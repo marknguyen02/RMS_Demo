@@ -7,7 +7,6 @@ namespace Src\TableGateways;
 /*** * Default CRUD functions ***/
 class WalletGateway
 {
-
     private $db = null;
     private $table_name = 'wallets';
 
@@ -114,8 +113,9 @@ class WalletGateway
             ));
 
             $lastInsertId = $this->db->lastInsertId();
-            if (!$lastInsertId || intval($lastInsertId) <= 0)
+            if (!$lastInsertId || intval($lastInsertId) <= 0) {
                 return 0;
+            }
             return intval($lastInsertId);
         } catch (\PDOException $e) {
             exit($e->getMessage());

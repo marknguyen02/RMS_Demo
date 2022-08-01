@@ -10,7 +10,6 @@ use Src\TableGateways\WalletGateway;
  * Controller will process user action, perform connect DB and return data to user view ***/
 class WalletController
 {
-
     private $walletGateway;
 
     public function __construct(\PDO $db)
@@ -102,10 +101,11 @@ class WalletController
     {
         $name = $input['name'];
         $hash_key = $input['hash_key'];
-        if (!isset($name) || strlen($name) < 3 || strlen($name) > 255 || preg_match('/[^a-z0-9]+/i', $name))
+        if (!isset($name) || strlen($name) < 3 || strlen($name) > 255 || preg_match('/[^a-z0-9]+/i', $name)) {
             return false;
-        elseif (!isset($hash_key) || strlen($hash_key) < 3 || strlen($hash_key) > 255)
+        } elseif (!isset($hash_key) || strlen($hash_key) < 3 || strlen($hash_key) > 255) {
             return false;
+        }
 
         return true;
     }
